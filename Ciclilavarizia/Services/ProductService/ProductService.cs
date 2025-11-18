@@ -1,6 +1,8 @@
-﻿namespace Ciclilavarizia.Services.ProductService
+﻿using MongoDB.Driver;
+
+namespace Ciclilavarizia.Services.ProductService
 {
-    public class ProductService() : IProductService
+    public class ProductService(IMongoDatabase mongoDatabase) : IProductService
     {
     }
 }
