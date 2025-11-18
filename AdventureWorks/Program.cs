@@ -1,6 +1,7 @@
 
 using AdventureWorks.Data;
 using AdventureWorks.Services.CustomerService;
+using AdventureWorks.Services.ProductService;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -21,6 +22,7 @@ namespace AdventureWorks
 
             // My services
             builder.Services.AddScoped<ICustomerService, CustomerService>();
+            builder.Services.AddScoped<IProductService, ProductService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
