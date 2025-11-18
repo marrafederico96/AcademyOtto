@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="AdventureWorks/AdventureWorks.csproj" />
+  <Project Path="AuthLibrary/AuthLibrary.csproj" />
+</Solution>
