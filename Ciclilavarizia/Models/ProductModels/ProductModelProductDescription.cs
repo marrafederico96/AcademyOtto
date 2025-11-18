@@ -1,4 +1,4 @@
-﻿namespace AdventureWorks.Models.ProductModel;
+﻿namespace Ciclilavarizia.Models.ProductModel;
 
 /// <summary>
 /// Cross-reference table mapping product descriptions and the language the description is written in.

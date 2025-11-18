@@ -1,4 +1,5 @@
-﻿namespace AdventureWorks.Models.ProductModel;
+﻿
+namespace Ciclilavarizia.Models.ProductModel;
 
 /// <summary>
 /// Product descriptions in several languages.

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AdventureWorks.Exceptions
+namespace Ciclilavarizia.Exceptions
 {
     public class GlobalExceptionHandler(IHostEnvironment env) : IExceptionHandler
     {

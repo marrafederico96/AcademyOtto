@@ -1,6 +1,6 @@
-﻿namespace AdventureWorks.Services.ProductService
+﻿namespace Ciclilavarizia.Services.ProductService
 {
-    public class ProductService : IProductService
+    public class ProductService() : IProductService
     {
     }
 }

@@ -1,8 +1,8 @@
-﻿using AdventureWorks.Models.CustomerModel.Dtos;
-using AdventureWorks.Services.CustomerService;
+﻿using Ciclilavarizia.Models.CustomerModel.Dtos;
+using Ciclilavarizia.Services.CustomerService;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AdventureWorks.Controllers
+namespace Ciclilavarizia.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]

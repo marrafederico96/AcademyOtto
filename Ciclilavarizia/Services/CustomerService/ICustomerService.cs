@@ -1,6 +1,6 @@
-﻿using AdventureWorks.Models.CustomerModel.Dtos;
+﻿using Ciclilavarizia.Models.CustomerModel.Dtos;
 
-namespace AdventureWorks.Services.CustomerService
+namespace Ciclilavarizia.Services.CustomerService
 {
     public interface ICustomerService
     {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AdventureWorks.Models;
+﻿namespace Ciclilavarizia.Models;
 
 /// <summary>
 /// Current version number of the AdventureWorksLT 2012 sample database. 

@@ -1,15 +1,14 @@
-
-using AdventureWorks.Data;
-using AdventureWorks.Exceptions;
-using AdventureWorks.Services.CustomerService;
-using AdventureWorks.Services.ProductService;
 using AuthLibrary;
 using AuthLibrary.Models;
+using Ciclilavarizia.Data;
+using Ciclilavarizia.Exceptions;
+using Ciclilavarizia.Services.CustomerService;
+using Ciclilavarizia.Services.ProductService;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using Serilog;
 
-namespace AdventureWorks
+namespace Ciclilavarizia
 {
     public class Program
     {
@@ -29,7 +28,9 @@ namespace AdventureWorks
                 .CreateLogger();
 
             // Add services to the container.
-            builder.Services.AddDbContext<AdventureWorksLt2019Context>(options =>
+
+            // Add SQL Server Context
+            builder.Services.AddDbContext<CiclilavariziaContext>(options =>
             {
                 options.UseSqlServer(connectionStringProd);
             });

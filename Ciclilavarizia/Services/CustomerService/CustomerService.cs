@@ -1,11 +1,11 @@
-﻿using AdventureWorks.Data;
-using AdventureWorks.Exceptions;
-using AdventureWorks.Models.CustomerModel.Dtos;
+﻿using Ciclilavarizia.Data;
+using Ciclilavarizia.Exceptions;
+using Ciclilavarizia.Models.CustomerModel.Dtos;
 using Microsoft.EntityFrameworkCore;
 
-namespace AdventureWorks.Services.CustomerService
+namespace Ciclilavarizia.Services.CustomerService
 {
-    public class CustomerService(AdventureWorksLt2019Context context) : ICustomerService
+    public class CustomerService(CiclilavariziaContext context) : ICustomerService
     {
         public async Task<List<CustomerResponse>> GetCustomersAsync(int page, int pageSize)
         {

@@ -1,4 +1,4 @@
-﻿namespace AdventureWorks.Models.ProductModel;
+﻿namespace Ciclilavarizia.Models.ProductModel;
 
 /// <summary>
 /// High-level product categorization.

@@ -1,8 +1,7 @@
-﻿using AdventureWorks.Models.CustomerModel;
-using System;
-using System.Collections.Generic;
+﻿using Ciclilavarizia.Models.CustomerModel;
+using Ciclilavarizia.Models.SalesOrderModel;
 
-namespace AdventureWorks.Models.SalesOrderModel;
+namespace Ciclilavarizia.Models.SalesOrderModels;
 
 /// <summary>
 /// General sales order information.

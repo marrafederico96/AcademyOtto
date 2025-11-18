@@ -1,4 +1,4 @@
-﻿namespace AdventureWorks.Exceptions
+﻿namespace Ciclilavarizia.Exceptions
 {
     public class NotFoundException(string message) : Exception(message)
     {

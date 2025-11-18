@@ -2,7 +2,7 @@
 using AuthLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AdventureWorks.Controllers
+namespace Ciclilavarizia.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]

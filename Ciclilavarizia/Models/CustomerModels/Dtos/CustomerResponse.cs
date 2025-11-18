@@ -1,4 +1,4 @@
-﻿namespace AdventureWorks.Models.CustomerModel.Dtos
+﻿namespace Ciclilavarizia.Models.CustomerModel.Dtos
 {
     public class CustomerResponse
     {

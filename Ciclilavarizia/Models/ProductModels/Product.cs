@@ -1,6 +1,6 @@
-﻿using AdventureWorks.Models.SalesOrderModel;
+﻿using Ciclilavarizia.Models.SalesOrderModel;
 
-namespace AdventureWorks.Models.ProductModel;
+namespace Ciclilavarizia.Models.ProductModel;
 
 /// <summary>
 /// Products sold or used in the manfacturing of sold products.

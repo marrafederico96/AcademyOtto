@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AdventureWorks.Models.ViewModel;
+﻿namespace Ciclilavarizia.Models.ViewModel;
 
 public partial class VProductAndDescription
 {

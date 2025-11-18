@@ -1,6 +1,6 @@
-﻿using AdventureWorks.Models.SalesOrderModel;
+﻿using Ciclilavarizia.Models.SalesOrderModels;
 
-namespace AdventureWorks.Models.CustomerModel;
+namespace Ciclilavarizia.Models.CustomerModel;
 
 /// <summary>
 /// Street address information for customers.

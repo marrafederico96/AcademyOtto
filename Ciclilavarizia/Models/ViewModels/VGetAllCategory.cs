@@ -1,4 +1,4 @@
-﻿namespace AdventureWorks.Models.ViewModel;
+﻿namespace Ciclilavarizia.Models.ViewModel;
 
 public partial class VGetAllCategory
 {

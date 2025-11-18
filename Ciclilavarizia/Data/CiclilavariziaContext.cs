@@ -1,19 +1,20 @@
-﻿using AdventureWorks.Models;
-using AdventureWorks.Models.CustomerModel;
-using AdventureWorks.Models.ProductModel;
-using AdventureWorks.Models.SalesOrderModel;
-using AdventureWorks.Models.ViewModel;
+﻿using Ciclilavarizia.Models;
+using Ciclilavarizia.Models.CustomerModel;
+using Ciclilavarizia.Models.ProductModel;
+using Ciclilavarizia.Models.SalesOrderModel;
+using Ciclilavarizia.Models.SalesOrderModels;
+using Ciclilavarizia.Models.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace AdventureWorks.Data;
+namespace Ciclilavarizia.Data;
 
-public partial class AdventureWorksLt2019Context : DbContext
+public partial class CiclilavariziaContext : DbContext
 {
-    public AdventureWorksLt2019Context()
+    public CiclilavariziaContext()
     {
     }
 
-    public AdventureWorksLt2019Context(DbContextOptions<AdventureWorksLt2019Context> options)
+    public CiclilavariziaContext(DbContextOptions<CiclilavariziaContext> options)
         : base(options)
     {
     }
