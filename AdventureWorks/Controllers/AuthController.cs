@@ -1,10 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AuthLibrary;
+using AuthLibrary.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AdventureWorks.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class AuthController : ControllerBase
+    public class AuthController(SqlService sqlService) : ControllerBase
     {
+        [HttpGet]
+        public async Task<IActionResult> Login([FromBody] UserLoginRequest userData)
+        {
+            try
+            {
+                var result = await sqlService.LoginUser(userData, "Admin");
+                return Ok(new { token = result });
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+        }
     }
 }

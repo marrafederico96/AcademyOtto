@@ -1,8 +1,8 @@
 ﻿namespace AuthLibrary.Models
 {
-    public class UserLoginRequest
+    public record UserLoginRequest
     {
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
+        public required string Email { get; set; }
+        public required string Password { get; set; }
     }
 }

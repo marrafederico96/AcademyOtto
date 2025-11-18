@@ -2,6 +2,8 @@
 using AdventureWorks.Data;
 using AdventureWorks.Services.CustomerService;
 using AdventureWorks.Services.ProductService;
+using AuthLibrary;
+using AuthLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -19,6 +21,16 @@ namespace AdventureWorks
                 options.UseSqlServer(builder.Configuration.GetConnectionString("AdventureWorks")
                     ?? throw new InvalidOperationException("Connection string not found"));
             });
+
+            // Add Auth Library 
+            var connectionStringSecurity = builder.Configuration.GetConnectionString("AdventureWorksSecurity")
+                ?? throw new InvalidOperationException("Connection string not found");
+
+            var tokenSettings = builder.Configuration.GetSection("TokenSettings").Get<TokenSettings>()
+                ?? throw new InvalidOperationException("Token settings not found");
+
+            SqlService sqlService = new(connectionStringSecurity, tokenSettings);
+            builder.Services.AddSingleton(sqlService);
 
             // My services
             builder.Services.AddScoped<ICustomerService, CustomerService>();
