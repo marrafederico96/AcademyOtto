@@ -1,5 +1,4 @@
-﻿using Ciclilavarizia.Models.CustomerModel;
-using Ciclilavarizia.Models.SalesOrderModel;
+﻿using Ciclilavarizia.Models.CustomerModels;
 
 namespace Ciclilavarizia.Models.SalesOrderModels;
 

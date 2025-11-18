@@ -1,9 +1,8 @@
 ﻿using Ciclilavarizia.Models;
-using Ciclilavarizia.Models.CustomerModel;
-using Ciclilavarizia.Models.ProductModel;
-using Ciclilavarizia.Models.SalesOrderModel;
+using Ciclilavarizia.Models.CustomerModels;
+using Ciclilavarizia.Models.ProductModels;
 using Ciclilavarizia.Models.SalesOrderModels;
-using Ciclilavarizia.Models.ViewModel;
+using Ciclilavarizia.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ciclilavarizia.Data;

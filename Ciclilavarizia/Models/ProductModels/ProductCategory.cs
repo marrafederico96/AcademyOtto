@@ -1,4 +1,4 @@
-﻿namespace Ciclilavarizia.Models.ProductModel;
+﻿namespace Ciclilavarizia.Models.ProductModels;
 
 /// <summary>
 /// High-level product categorization.

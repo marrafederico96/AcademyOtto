@@ -1,4 +1,4 @@
-﻿namespace Ciclilavarizia.Models.ViewModel;
+﻿namespace Ciclilavarizia.Models.ViewModels;
 
 public partial class VProductAndDescription
 {

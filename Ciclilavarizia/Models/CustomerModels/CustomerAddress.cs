@@ -1,4 +1,4 @@
-﻿namespace Ciclilavarizia.Models.CustomerModel;
+﻿namespace Ciclilavarizia.Models.CustomerModels;
 
 /// <summary>
 /// Cross-reference table mapping customers to their address(es).

@@ -1,4 +1,4 @@
-﻿namespace Ciclilavarizia.Models.ProductModel;
+﻿namespace Ciclilavarizia.Models.ProductModels;
 
 /// <summary>
 /// Cross-reference table mapping product descriptions and the language the description is written in.

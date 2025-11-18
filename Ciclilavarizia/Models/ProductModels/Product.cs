@@ -1,6 +1,6 @@
-﻿using Ciclilavarizia.Models.SalesOrderModel;
+﻿using Ciclilavarizia.Models.SalesOrderModels;
 
-namespace Ciclilavarizia.Models.ProductModel;
+namespace Ciclilavarizia.Models.ProductModels;
 
 /// <summary>
 /// Products sold or used in the manfacturing of sold products.

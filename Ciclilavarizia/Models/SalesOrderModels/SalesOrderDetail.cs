@@ -1,7 +1,6 @@
-﻿using Ciclilavarizia.Models.ProductModel;
-using Ciclilavarizia.Models.SalesOrderModels;
+﻿using Ciclilavarizia.Models.ProductModels;
 
-namespace Ciclilavarizia.Models.SalesOrderModel;
+namespace Ciclilavarizia.Models.SalesOrderModels;
 
 /// <summary>
 /// Individual products associated with a specific sales order. See SalesOrderHeader.

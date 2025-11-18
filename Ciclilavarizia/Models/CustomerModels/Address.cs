@@ -1,6 +1,6 @@
 ﻿using Ciclilavarizia.Models.SalesOrderModels;
 
-namespace Ciclilavarizia.Models.CustomerModel;
+namespace Ciclilavarizia.Models.CustomerModels;
 
 /// <summary>
 /// Street address information for customers.

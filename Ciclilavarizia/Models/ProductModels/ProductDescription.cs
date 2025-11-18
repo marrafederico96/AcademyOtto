@@ -1,5 +1,4 @@
-﻿
-namespace Ciclilavarizia.Models.ProductModel;
+﻿namespace Ciclilavarizia.Models.ProductModels;
 
 /// <summary>
 /// Product descriptions in several languages.

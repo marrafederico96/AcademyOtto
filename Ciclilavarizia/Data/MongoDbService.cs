@@ -18,6 +18,9 @@ namespace Ciclilavarizia.Data
         }
 
         public IMongoCollection<ProductResponse> Products =>
-                _database.GetCollection<ProductResponse>(_settings.Collections["ProductCollection"]);
+                _database.GetCollection<ProductResponse>(_settings.Collections["Products"]);
+
+        public IMongoCollection<ProductCategoryResponse> ProductCategories =>
+            _database.GetCollection<ProductCategoryResponse>(_settings.Collections["ProductCategories"]);
     }
 }
