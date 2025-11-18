@@ -1,4 +1,5 @@
 ﻿using AdventureWorks.Data;
+using AdventureWorks.Exceptions;
 using AdventureWorks.Models.CustomerModel.Dtos;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,6 +28,28 @@ namespace AdventureWorks.Services.CustomerService
                 }).ToListAsync();
 
             return customers;
+        }
+
+        public async Task<CustomerResponse> GetCustomerByIdAsync(int customerId)
+        {
+            var customer = await context.Customers
+                .AsNoTracking()
+                .Where(c => c.CustomerId == customerId)
+                .Select(c => new CustomerResponse
+                {
+                    CustomerId = c.CustomerId,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    MiddleName = c.MiddleName,
+                    EmailAddress = c.EmailAddress,
+                    Title = c.Title,
+                    Phone = c.Phone,
+                    SalesPerson = c.SalesPerson,
+                    Suffix = c.Suffix,
+                    CompanyName = c.CompanyName,
+                }).FirstOrDefaultAsync() ?? throw new NotFoundException($"Customer with ID {customerId} not found.");
+
+            return customer;
         }
     }
 }

@@ -20,7 +20,21 @@ namespace AdventureWorks.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
         }
+
+        [HttpGet("{customerId}")]
+        public async Task<ActionResult<CustomerResponse>> GetCustomerById(int customerId)
+        {
+            try
+            {
+                var result = await customerService.GetCustomerByIdAsync(customerId);
+                return Ok(new { customer = result });
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
     }
 }
