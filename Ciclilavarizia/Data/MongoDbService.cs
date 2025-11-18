@@ -1,5 +1,5 @@
 ﻿using Ciclilavarizia.Models;
-using Ciclilavarizia.Models.ProductModels.Dtos;
+using Ciclilavarizia.Models.ProductModels;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
@@ -17,10 +17,10 @@ namespace Ciclilavarizia.Data
             _database = client.GetDatabase(_settings.DatabaseName);
         }
 
-        public IMongoCollection<ProductResponse> Products =>
-                _database.GetCollection<ProductResponse>(_settings.Collections["Products"]);
+        public IMongoCollection<Product> Products =>
+                _database.GetCollection<Product>(_settings.Collections["Products"]);
 
-        public IMongoCollection<ProductCategoryResponse> ProductCategories =>
-            _database.GetCollection<ProductCategoryResponse>(_settings.Collections["ProductCategories"]);
+        public IMongoCollection<ProductCategory> ProductCategories =>
+            _database.GetCollection<ProductCategory>(_settings.Collections["ProductCategories"]);
     }
 }
