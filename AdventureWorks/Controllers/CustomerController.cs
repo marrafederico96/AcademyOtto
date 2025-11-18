@@ -11,30 +11,15 @@ namespace AdventureWorks.Controllers
         [HttpGet]
         public async Task<ActionResult<List<CustomerResponse>>> GetCustomers([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            try
-            {
-                var result = await customerService.GetCustomersAsync(page, pageSize);
-                return Ok(new { customers = result });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await customerService.GetCustomersAsync(page, pageSize);
+            return Ok(new { customers = result });
         }
 
         [HttpGet("{customerId}")]
         public async Task<ActionResult<CustomerResponse>> GetCustomerById(int customerId)
         {
-            try
-            {
-                var result = await customerService.GetCustomerByIdAsync(customerId);
-                return Ok(new { customer = result });
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
+            var result = await customerService.GetCustomerByIdAsync(customerId);
+            return Ok(new { customer = result });
         }
-
     }
 }

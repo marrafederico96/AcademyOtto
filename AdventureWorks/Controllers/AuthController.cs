@@ -11,15 +11,8 @@ namespace AdventureWorks.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] UserLoginRequest userData)
         {
-            try
-            {
-                var result = await sqlService.LoginUser(userData, "Admin");
-                return Ok(new { token = result });
-            }
-            catch (Exception ex)
-            {
-                return Unauthorized(ex.Message);
-            }
+            var result = await sqlService.LoginUser(userData, "Admin");
+            return Ok(new { token = result });
         }
     }
 }

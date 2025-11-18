@@ -1,11 +1,13 @@
 
 using AdventureWorks.Data;
+using AdventureWorks.Exceptions;
 using AdventureWorks.Services.CustomerService;
 using AdventureWorks.Services.ProductService;
 using AuthLibrary;
 using AuthLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using Serilog;
 
 namespace AdventureWorks
 {
@@ -15,17 +17,28 @@ namespace AdventureWorks
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var connectionStringProd = builder.Configuration.GetConnectionString("AdventureWorks")
+                    ?? throw new InvalidOperationException("Connection string not found");
+            var connectionStringSecurity = builder.Configuration.GetConnectionString("AdventureWorksSecurity")
+                    ?? throw new InvalidOperationException("Connection string not found");
+
+            //Add Serilog
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.File("Logs\\ciclilavarizia.log", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
             // Add services to the container.
             builder.Services.AddDbContext<AdventureWorksLt2019Context>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("AdventureWorks")
-                    ?? throw new InvalidOperationException("Connection string not found"));
+                options.UseSqlServer(connectionStringProd);
             });
 
-            // Add Auth Library 
-            var connectionStringSecurity = builder.Configuration.GetConnectionString("AdventureWorksSecurity")
-                ?? throw new InvalidOperationException("Connection string not found");
+            // Add Middleware Exception
+            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+            builder.Services.AddProblemDetails();
 
+            // Add Auth Library 
             var tokenSettings = builder.Configuration.GetSection("TokenSettings").Get<TokenSettings>()
                 ?? throw new InvalidOperationException("Token settings not found");
 
@@ -49,6 +62,8 @@ namespace AdventureWorks
                 app.MapSwagger("/openapi/{documentName}.json");
                 app.MapScalarApiReference();
             }
+
+            app.UseExceptionHandler();
 
             app.UseHttpsRedirection();
 
