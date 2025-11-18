@@ -6,9 +6,6 @@ namespace Ciclilavarizia.Models.ProductModels.Dtos
     [BsonIgnoreExtraElements]
     public class ProductResponse
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string _id { get; set; } = string.Empty;
 
         [BsonElement("ProductID")]
         public int ProductId { get; set; }
