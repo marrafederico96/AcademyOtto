@@ -13,22 +13,11 @@ namespace Ciclilavarizia.Data
         public MongoDbService(IOptions<MongoDbSettings> mongoDbSettings)
         {
             _settings = mongoDbSettings.Value ?? throw new ArgumentNullException(nameof(mongoDbSettings));
-
             var client = new MongoClient(_settings.ConnectionString);
             _database = client.GetDatabase(_settings.DatabaseName);
         }
 
-        public IMongoCollection<T> GetCollection<T>(string collectionName)
-        {
-            return _database.GetCollection<T>(collectionName);
-        }
-
-        public IMongoCollection<ProductResponse> Products
-        {
-            get
-            {
-                return _database.GetCollection<ProductResponse>(_settings.Collections["ProductCollection"]);
-            }
-        }
+        public IMongoCollection<ProductResponse> Products =>
+                _database.GetCollection<ProductResponse>(_settings.Collections["ProductCollection"]);
     }
 }
