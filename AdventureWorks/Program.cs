@@ -1,5 +1,6 @@
 
 using AdventureWorks.Data;
+using AdventureWorks.Services.CustomerService;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -14,9 +15,12 @@ namespace AdventureWorks
             // Add services to the container.
             builder.Services.AddDbContext<AdventureWorksLt2019Context>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("AdventureWorksLT2019")
+                options.UseSqlServer(builder.Configuration.GetConnectionString("AdventureWorks")
                     ?? throw new InvalidOperationException("Connection string not found"));
             });
+
+            // My services
+            builder.Services.AddScoped<ICustomerService, CustomerService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
