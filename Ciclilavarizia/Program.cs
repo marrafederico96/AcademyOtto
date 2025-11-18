@@ -2,10 +2,10 @@ using AuthLibrary;
 using AuthLibrary.Models;
 using Ciclilavarizia.Data;
 using Ciclilavarizia.Exceptions;
+using Ciclilavarizia.Models;
 using Ciclilavarizia.Services.CustomerService;
 using Ciclilavarizia.Services.ProductService;
 using Microsoft.EntityFrameworkCore;
-using MongoDB.Driver;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -37,21 +37,8 @@ namespace Ciclilavarizia
             });
 
             // Add Mongo DB
-            var mongoSettings = builder.Configuration
-                .GetSection("MongoDbSettings")
-                .Get<MongoDbSettings>()
-                ?? throw new InvalidOperationException("MongoDbSettings not found");
-
-            builder.Services.AddSingleton<IMongoClient>(sp =>
-            {
-                return new MongoClient(mongoSettings.ConnectionString);
-            });
-
-            builder.Services.AddSingleton(sp =>
-            {
-                var client = sp.GetRequiredService<IMongoClient>();
-                return client.GetDatabase(mongoSettings.DatabaseName);
-            });
+            builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
+            builder.Services.AddSingleton<MongoDbService>();
 
             // Add Middleware Exception
             builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

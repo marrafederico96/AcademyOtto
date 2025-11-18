@@ -29,8 +29,6 @@ public partial class CiclilavariziaContext : DbContext
 
     public virtual DbSet<ErrorLog> ErrorLogs { get; set; }
 
-    public virtual DbSet<Log> Logs { get; set; }
-
     public virtual DbSet<Product> Products { get; set; }
 
     public virtual DbSet<ProductCategory> ProductCategories { get; set; }
@@ -239,11 +237,6 @@ public partial class CiclilavariziaContext : DbContext
             entity.Property(e => e.UserName)
                 .HasMaxLength(128)
                 .HasComment("The user who executed the batch in which the error occurred.");
-        });
-
-        modelBuilder.Entity<Log>(entity =>
-        {
-            entity.Property(e => e.TimeStamp).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Product>(entity =>

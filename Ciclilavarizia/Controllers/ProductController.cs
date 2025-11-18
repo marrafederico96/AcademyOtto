@@ -1,4 +1,5 @@
-﻿using Ciclilavarizia.Services.ProductService;
+﻿using Ciclilavarizia.Models.ProductModels.Dtos;
+using Ciclilavarizia.Services.ProductService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ciclilavarizia.Controllers
@@ -8,9 +9,10 @@ namespace Ciclilavarizia.Controllers
     public class ProductController(IProductService productService) : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetCollections()
+        public async Task<ActionResult<List<ProductResponse>>> GetCollections()
         {
-            return Ok();
+            var result = await productService.GetAllProductsAsync();
+            return Ok(result);
         }
     }
 }
