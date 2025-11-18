@@ -8,7 +8,7 @@ namespace AdventureWorks.Controllers
     [Route("api/[controller]/[action]")]
     public class AuthController(SqlService sqlService) : ControllerBase
     {
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Login([FromBody] UserLoginRequest userData)
         {
             try
