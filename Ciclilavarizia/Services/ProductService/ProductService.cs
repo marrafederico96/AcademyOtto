@@ -9,7 +9,18 @@ namespace Ciclilavarizia.Services.ProductService
 
         public async Task<List<ProductResponse>> GetAllProductsAsync()
         {
-            return await mongoDbService.Products.Find(_ => true).ToListAsync();
+            var products = await mongoDbService.Products
+                .Aggregate()
+                .Lookup(
+                    foreignCollectionName: "ProductCategories",
+                    localField: "ProductCategoryId",
+                    foreignField: "ProductCategoryID",
+                    @as: "ProductCategory")
+                .Unwind("ProductCategory", new AggregateUnwindOptions<ProductResponse> { PreserveNullAndEmptyArrays = true })
+                .As<ProductResponse>()
+                .ToListAsync();
+
+            return products;
         }
     }
 }

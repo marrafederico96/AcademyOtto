@@ -37,5 +37,8 @@ namespace Ciclilavarizia.Models.ProductModels.Dtos
         [BsonElement("ProductModelID")]
         public int? ProductModelId { get; set; }
 
+        public ProductCategoryResponse? ProductCategory { get; set; }
+
+        public ProductModelResponse? ProductModel { get; set; }
     }
 }

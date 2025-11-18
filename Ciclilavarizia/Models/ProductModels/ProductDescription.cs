@@ -12,12 +12,17 @@ public partial class ProductDescription
     [BsonRepresentation(BsonType.ObjectId)]
     public string _id { get; set; } = string.Empty;
 
+    [BsonElement("ProductDescriptionID")]
     public int ProductDescriptionId { get; set; }
 
+    [BsonElement("Description")]
     public string Description { get; set; } = null!;
 
+    [BsonElement("rowguid")]
     public Guid Rowguid { get; set; }
 
-    public DateTime ModifiedDate { get; set; }
+    [BsonElement("ModifiedDate")]
+    [BsonRepresentation(BsonType.String)]
+    public string ModifiedDate { get; set; }
 
 }

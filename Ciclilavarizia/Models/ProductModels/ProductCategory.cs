@@ -12,13 +12,18 @@ public partial class ProductCategory
     [BsonRepresentation(BsonType.ObjectId)]
     public string _id { get; set; } = string.Empty;
 
+    [BsonElement("ProductCategoryID")]
     public int ProductCategoryId { get; set; }
 
+    [BsonElement("ParentProductCategoryID")]
     public int? ParentProductCategoryId { get; set; }
 
+    [BsonElement("Name")]
     public string Name { get; set; } = null!;
 
+    [BsonElement("rowguid ")]
     public Guid Rowguid { get; set; }
 
-    public DateTime ModifiedDate { get; set; }
+    [BsonElement("ModifiedDate")]
+    public string ModifiedDate { get; set; }
 }
