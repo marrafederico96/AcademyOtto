@@ -7,10 +7,12 @@ namespace Ciclilavarizia.Services.ProductService
     public class ProductService(MongoDbService mongoDbService) : IProductService
     {
 
-        public async Task<List<ProductResponse>> GetAllProductsAsync()
+        public async Task<List<ProductResponse>> GetAllProductsAsync(int page, int pageSize)
         {
             var products = await mongoDbService.Products
                 .Aggregate()
+                .Skip((page - 1) * pageSize)
+                .Limit(pageSize)
                 .Lookup(
                     foreignCollectionName: "ProductCategories",
                     localField: "ProductCategoryId",
@@ -22,5 +24,6 @@ namespace Ciclilavarizia.Services.ProductService
 
             return products;
         }
+
     }
 }
