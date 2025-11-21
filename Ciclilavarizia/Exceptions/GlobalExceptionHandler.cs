@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace Ciclilavarizia.Exceptions
 {
@@ -15,16 +16,19 @@ namespace Ciclilavarizia.Exceptions
                     problemDetails.Title = "Not Found";
                     problemDetails.Status = StatusCodes.Status404NotFound;
                     problemDetails.Detail = exception.Message;
+                    Log.Error($"Item not found: {exception.Message}");
                     break;
                 case UnauthorizedAccessException:
                     problemDetails.Title = " Unauthorized Access";
                     problemDetails.Status = StatusCodes.Status401Unauthorized;
                     problemDetails.Detail = exception.Message;
+                    Log.Error($"Login failed: {exception.Message}");
                     break;
                 default:
                     problemDetails.Detail = env.IsDevelopment() ? exception.Message : "Errore interno. Riprovate";
                     problemDetails.Title = "Internal Server Error";
                     problemDetails.Status = StatusCodes.Status500InternalServerError;
+                    Log.Error($"Server error: {exception.Message}");
                     break;
 
             }

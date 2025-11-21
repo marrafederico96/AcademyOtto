@@ -12,7 +12,6 @@ namespace Ciclilavarizia.Services.ProductService
         {
             var aggregate = mongoDbService.Products
                            .Aggregate()
-
                            .Lookup(
                                foreignCollectionName: "ProductCategories",
                                localField: "ProductCategoryId",
