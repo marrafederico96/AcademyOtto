@@ -25,5 +25,5 @@ public partial class ProductCategory
     public Guid Rowguid { get; set; }
 
     [BsonElement("ModifiedDate")]
-    public string ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 }

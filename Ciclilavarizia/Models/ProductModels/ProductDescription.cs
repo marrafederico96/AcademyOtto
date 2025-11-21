@@ -23,6 +23,6 @@ public partial class ProductDescription
 
     [BsonElement("ModifiedDate")]
     [BsonRepresentation(BsonType.String)]
-    public string ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
 }

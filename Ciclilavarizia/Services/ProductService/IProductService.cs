@@ -4,7 +4,7 @@ namespace Ciclilavarizia.Services.ProductService
 {
     public interface IProductService
     {
-        public Task<List<ProductResponse>> GetAllProductsAsync(int page, int pageSize);
+        public Task<List<ProductResponse>> GetProductsAsync(int page, int pageSize, string categoryName);
 
     }
 }

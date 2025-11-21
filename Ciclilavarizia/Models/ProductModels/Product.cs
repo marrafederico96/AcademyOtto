@@ -41,15 +41,15 @@ public partial class Product
 
     [BsonElement("SellStartDate")]
     [BsonRepresentation(BsonType.String)]
-    public string SellStartDate { get; set; }
+    public DateTime SellStartDate { get; set; }
 
     [BsonElement("SellEndDate")]
     [BsonRepresentation(BsonType.String)]
-    public string? SellEndDate { get; set; }
+    public DateTime? SellEndDate { get; set; }
 
     [BsonElement("DiscontinuedDate")]
     [BsonRepresentation(BsonType.String)]
-    public string? DiscontinuedDate { get; set; }
+    public DateTime? DiscontinuedDate { get; set; }
 
     [BsonElement("ThumbNailPhoto")]
     public string? ThumbNailPhoto { get; set; }
@@ -62,5 +62,5 @@ public partial class Product
 
     [BsonElement("ModifiedDate")]
     [BsonRepresentation(BsonType.String)]
-    public string ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 }

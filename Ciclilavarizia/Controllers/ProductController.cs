@@ -9,10 +9,12 @@ namespace Ciclilavarizia.Controllers
     public class ProductController(IProductService productService) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<List<ProductResponse>>> GetAllProducts([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<ActionResult<List<ProductResponse>>> GetProducts(
+            [FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string categoryName = "All")
         {
-            var result = await productService.GetAllProductsAsync(page, pageSize);
+            var result = await productService.GetProductsAsync(page, pageSize, categoryName);
             return Ok(result);
         }
+
     }
 }
