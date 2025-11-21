@@ -21,5 +21,12 @@ namespace Ciclilavarizia.Controllers
             var result = await sqlService.RegisterUser(userData);
             return Ok(new { registration = result });
         }
+
+        [HttpPut]
+        public async Task<IActionResult> RefreshPassword([FromBody] UserLoginRequest userData)
+        {
+            await sqlService.RefreshPassword(userData.EmailAddress, userData.Password);
+            return Ok();
+        }
     }
 }

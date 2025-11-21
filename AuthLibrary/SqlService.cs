@@ -41,8 +41,6 @@ namespace AuthLibrary
                 throw new UnauthorizedAccessException("Wrong Credentials");
             }
 
-
-
             var token = TokenService.GenerateJwtToken(userData.EmailAddress, role, tokenSettings);
             return token;
         }
@@ -114,6 +112,61 @@ namespace AuthLibrary
                 return false;
             }
 
+        }
+
+        public async Task<bool> RefreshPassword(string emailAddress, string newPassword)
+        {
+            using var connectionSecurity = new SqlConnection(connectionStringSec);
+            await connectionSecurity.OpenAsync();
+
+            string query = "SELECT CustomerId,PasswordHash, PasswordSalt, ModifiedDate FROM Customer WHERE LOWER(TRIM(EmailAddress)) = @EmailAddress";
+            var verifyEmail = new SqlCommand(query, connectionSecurity);
+
+            var emailParam = CreateParam("@EmailAddress", SqlDbType.VarChar, emailAddress);
+            verifyEmail.Parameters.Add(emailParam);
+
+            using var reader = await verifyEmail.ExecuteReaderAsync();
+            if (!reader.Read())
+            {
+                throw new UnauthorizedAccessException("Wrong Credentials");
+            }
+
+            int customerId = reader.GetInt32(reader.GetOrdinal("CustomerId"));
+            await reader.CloseAsync();
+
+            var (Hash, Salt) = PasswordService.HashPassword(newPassword);
+            var hashParam = CreateParam("@PasswordHash", SqlDbType.VarChar, Hash, 256);
+            var saltParam = CreateParam("@PasswordSalt", SqlDbType.VarChar, Salt, 64);
+            var modifiedDateParam = CreateParam("@ModifiedDate", SqlDbType.DateTime, DateTime.UtcNow);
+            var rowGuidParam = CreateParam("@RowGuid", SqlDbType.UniqueIdentifier, Guid.NewGuid());
+            var customerIdParam = CreateParam("@CustomerId", SqlDbType.Int, customerId);
+
+
+            var insertQuery = "UPDATE Customer SET " +
+                "PasswordHash = @PasswordHash," +
+                "PasswordSalt = @PasswordSalt," +
+                "Rowguid = @RowGuid," +
+                "ModifiedDate = @ModifiedDate " +
+                "WHERE CustomerId = @CustomerId";
+
+            var registerSecurity = new SqlCommand(insertQuery, connectionSecurity);
+
+            registerSecurity.Parameters.Add(hashParam);
+            registerSecurity.Parameters.Add(saltParam);
+            registerSecurity.Parameters.Add(rowGuidParam);
+            registerSecurity.Parameters.Add(customerIdParam);
+            registerSecurity.Parameters.Add(modifiedDateParam);
+
+            var result = await registerSecurity.ExecuteNonQueryAsync();
+
+            if (result == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private async static Task<int> RegisterSecurity(SqlConnection connectionSecurity, string password, string email)
