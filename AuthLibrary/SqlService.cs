@@ -14,7 +14,7 @@ namespace AuthLibrary
 
             string query = "SELECT PasswordHash, PasswordSalt, ModifiedDate FROM Customer WHERE LOWER(TRIM(EmailAddress)) = @Email";
             var command = new SqlCommand(query, connection);
-            var param = new SqlParameter("@Email", SqlDbType.NVarChar, 256)
+            var param = new SqlParameter("@Email", SqlDbType.NVarChar, 50)
             {
                 Value = userData.EmailAddress.Trim().ToLowerInvariant()
             };
@@ -71,7 +71,9 @@ namespace AuthLibrary
                 throw new PasswordMismatchException("Password not match");
             }
 
+            var resultSec = await RegisterSecurity(connectionSecurity, userData.Password, userData.EmailAddress);
             await connectionSecurity.CloseAsync();
+
             using var connectionProd = new SqlConnection(connectionStringProd);
             await connectionProd.OpenAsync();
 
@@ -102,7 +104,6 @@ namespace AuthLibrary
             var resultProd = await registerProdCommand.ExecuteNonQueryAsync();
             connectionProd.Close();
 
-            var resultSec = await RegisterSecurity(connectionStringSec, userData.Password, userData.EmailAddress);
 
             if (resultProd == resultSec && resultProd == 1 && resultSec == 1)
             {
@@ -115,15 +116,12 @@ namespace AuthLibrary
 
         }
 
-        private async static Task<int> RegisterSecurity(string securityString, string password, string email)
+        private async static Task<int> RegisterSecurity(SqlConnection connectionSecurity, string password, string email)
         {
-            using var connectionSecurity = new SqlConnection(securityString);
-            await connectionSecurity.OpenAsync();
-
             var (Hash, Salt) = PasswordService.HashPassword(password);
 
             var hashParam = CreateParam("@PasswordHash", SqlDbType.VarChar, Hash, 256);
-            var saltParam = CreateParam("@PasswordSalt", SqlDbType.VarChar, Salt, 32);
+            var saltParam = CreateParam("@PasswordSalt", SqlDbType.VarChar, Salt, 64);
             var emailAddressParam = CreateParam("@EmailAddress", SqlDbType.VarChar, email, 50);
             var modifiedDateParam = CreateParam("@ModifiedDate", SqlDbType.DateTime, DateTime.UtcNow);
             var rowGuidParam = CreateParam("@RowGuid", SqlDbType.UniqueIdentifier, Guid.NewGuid());

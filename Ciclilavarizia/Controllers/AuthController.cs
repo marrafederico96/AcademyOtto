@@ -19,7 +19,7 @@ namespace Ciclilavarizia.Controllers
         public async Task<IActionResult> Register([FromBody] UserRegisterRequest userData)
         {
             var result = await sqlService.RegisterUser(userData);
-            return Ok();
+            return Ok(new { registration = result });
         }
     }
 }
