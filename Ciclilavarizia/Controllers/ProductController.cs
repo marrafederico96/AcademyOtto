@@ -15,6 +15,5 @@ namespace Ciclilavarizia.Controllers
             var result = await productService.GetProductsAsync(page, pageSize, categoryName);
             return Ok(result);
         }
-
     }
 }

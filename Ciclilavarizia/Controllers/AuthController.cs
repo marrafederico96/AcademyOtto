@@ -14,5 +14,12 @@ namespace Ciclilavarizia.Controllers
             var result = await sqlService.LoginUser(userData, "Admin");
             return Ok(new { token = result });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Register([FromBody] UserRegisterRequest userData)
+        {
+            var result = await sqlService.RegisterUser(userData);
+            return Ok();
+        }
     }
 }

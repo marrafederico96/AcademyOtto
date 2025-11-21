@@ -19,6 +19,7 @@ namespace Ciclilavarizia
 
             var connectionStringProd = builder.Configuration.GetConnectionString("AdventureWorks")
                     ?? throw new InvalidOperationException("Connection string not found");
+
             var connectionStringSecurity = builder.Configuration.GetConnectionString("AdventureWorksSecurity")
                     ?? throw new InvalidOperationException("Connection string not found");
 
@@ -48,7 +49,7 @@ namespace Ciclilavarizia
             var tokenSettings = builder.Configuration.GetSection("TokenSettings").Get<TokenSettings>()
                 ?? throw new InvalidOperationException("Token settings not found");
 
-            SqlService sqlService = new(connectionStringSecurity, tokenSettings);
+            SqlService sqlService = new(connectionStringProd, connectionStringSecurity, tokenSettings);
             builder.Services.AddSingleton(sqlService);
 
             // My services

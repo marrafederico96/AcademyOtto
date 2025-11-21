@@ -5,7 +5,7 @@ namespace AuthLibrary
 {
     internal class PasswordService
     {
-        internal static bool HashPassword(string password, string storedHashBase64, string storedSaltBase64)
+        internal static bool CheckPassword(string password, string storedHashBase64, string storedSaltBase64)
         {
             byte[] saltBytes = Convert.FromBase64String(storedSaltBase64);
 
@@ -21,7 +21,7 @@ namespace AuthLibrary
             return CryptographicOperations.FixedTimeEquals(hashBytes, storedHashBytes);
         }
 
-        internal static (string Hash, string Salt) CheckPassword(string password)
+        internal static (string Hash, string Salt) HashPassword(string password)
         {
             byte[] saltBytes = new byte[32];
             RandomNumberGenerator.Fill(saltBytes);

@@ -2,7 +2,7 @@
 {
     public record UserLoginRequest
     {
-        public required string Email { get; set; }
+        public required string EmailAddress { get; set; }
         public required string Password { get; set; }
     }
 }
