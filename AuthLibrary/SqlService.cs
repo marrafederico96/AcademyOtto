@@ -1,223 +1,77 @@
-﻿using AuthLibrary.Exceptions;
+﻿using AuthLibrary.Data;
+using AuthLibrary.Exceptions;
 using AuthLibrary.Models;
-using Microsoft.Data.SqlClient;
-using System.Data;
+using AuthLibrary.Repository;
+using AuthLibrary.Security;
+using System.Transactions;
 
 namespace AuthLibrary
 {
-    public class SqlService(string connectionStringProd, string connectionStringSec, TokenSettings tokenSettings)
+    public class SqlService
     {
+        private readonly SqlConnectionFactory _sqlConnectionProductionFactory;
+        private readonly SqlConnectionFactory _sqlConnectionSecurityFactory;
+        private readonly CustomerProductionRepository _customerProduction;
+        private readonly CustomerSecurityRepository _customerSecurity;
+        private readonly TokenSettings _tokenSettings;
+
+        public SqlService(string connectionStringProduction, string connectionStringSecurity, TokenSettings tokenSettings)
+        {
+            _sqlConnectionProductionFactory = new SqlConnectionFactory(connectionStringProduction);
+            _sqlConnectionSecurityFactory = new SqlConnectionFactory(connectionStringSecurity);
+            _customerProduction = new CustomerProductionRepository(_sqlConnectionProductionFactory);
+            _customerSecurity = new CustomerSecurityRepository(_sqlConnectionSecurityFactory);
+            _tokenSettings = tokenSettings;
+        }
+
         public async Task<string> LoginUser(UserLoginRequest userData, string role)
         {
-            using var connection = new SqlConnection(connectionStringSec);
-            await connection.OpenAsync();
+            var userSecurity = await _customerSecurity.GetCustomerSecurityByEmailAsync(userData.EmailAddress)
+                ?? throw new UnauthorizedAccessException("Wrong Credentials");
 
-            string query = "SELECT PasswordHash, PasswordSalt, ModifiedDate FROM Customer WHERE LOWER(TRIM(EmailAddress)) = @Email";
-            var command = new SqlCommand(query, connection);
-            var param = new SqlParameter("@Email", SqlDbType.NVarChar, 50)
-            {
-                Value = userData.EmailAddress.Trim().ToLowerInvariant()
-            };
-            command.Parameters.Add(param);
-
-            using var reader = await command.ExecuteReaderAsync();
-
-            if (!reader.Read())
-            {
-                throw new UnauthorizedAccessException("Wrong Credentials");
-            }
-
-            string passwordHash = reader.GetString(reader.GetOrdinal("PasswordHash"));
-            string passwordSalt = reader.GetString(reader.GetOrdinal("PasswordSalt"));
-            DateTime modifiedDate = reader.GetDateTime(reader.GetOrdinal("ModifiedDate"));
-
-            if (modifiedDate < DateTime.UtcNow.AddMonths(-6))
-            {
+            if (userSecurity.ModifiedDate < DateTime.UtcNow.AddMonths(-6))
                 throw new PasswordExpiredException("Password expired. Change it.");
-            }
 
-            if (!PasswordService.CheckPassword(userData.Password, passwordHash, passwordSalt))
-            {
+            if (!PasswordService.CheckPassword(userData.Password, userSecurity.PasswordHash, userSecurity.PasswordSalt))
                 throw new UnauthorizedAccessException("Wrong Credentials");
-            }
 
-            var token = TokenService.GenerateJwtToken(userData.EmailAddress, role, tokenSettings);
-            return token;
+            return TokenService.GenerateJwtToken(userData.EmailAddress, role, _tokenSettings);
         }
 
         public async Task<bool> RegisterUser(UserRegisterRequest userData)
         {
-            using var connectionSecurity = new SqlConnection(connectionStringSec);
-            await connectionSecurity.OpenAsync();
+            using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
 
-            string query = "SELECT 1 FROM Customer WHERE LOWER(TRIM(EmailAddress)) = @EmailAddress";
-            var verifyEmail = new SqlCommand(query, connectionSecurity);
+            var customerId = await _customerProduction.InsertCustomerProductionAsync(userData);
 
-            var emailParam = CreateParam("@EmailAddress", SqlDbType.VarChar, userData.EmailAddress);
-            verifyEmail.Parameters.Add(emailParam);
+            await _customerSecurity.InsertCustomerSecurityAsync(userData, customerId);
 
-            using var reader = await verifyEmail.ExecuteReaderAsync();
-
-            if (await reader.ReadAsync())
-            {
-                throw new UserAlreadyExistsException($"Registration Failed. User with email '{userData.EmailAddress}' already exists.");
-            }
-            await reader.CloseAsync();
-
-            if (userData.Password != userData.ConfirmPassword)
-            {
-                throw new PasswordMismatchException("Password not match");
-            }
-
-            var resultSec = await RegisterSecurity(connectionSecurity, userData.Password, userData.EmailAddress);
-            await connectionSecurity.CloseAsync();
-
-            using var connectionProd = new SqlConnection(connectionStringProd);
-            await connectionProd.OpenAsync();
-
-            var parameters = new[]
-            {
-                CreateParam("@FirstName", SqlDbType.VarChar, userData.FirstName),
-                CreateParam("@LastName", SqlDbType.VarChar, userData.LastName),
-                CreateParam("@MiddleName", SqlDbType.VarChar, userData.MiddleName),
-                CreateParam("@Title", SqlDbType.VarChar, userData.Title),
-                CreateParam("@Suffix", SqlDbType.VarChar, userData.Suffix),
-                CreateParam("@CompanyName", SqlDbType.VarChar, userData.CompanyName),
-                CreateParam("@SalesPerson", SqlDbType.VarChar, userData.SalesPerson),
-                CreateParam("@Phone", SqlDbType.VarChar, userData.Phone),
-                CreateParam("@ModifiedDate",SqlDbType.DateTime, DateTime.UtcNow),
-                CreateParam("@RowGuid", SqlDbType.UniqueIdentifier, Guid.NewGuid())
-            };
-
-            var insertQueryProd = "INSERT INTO SalesLT.Customer (FirstName,LastName,MiddleName,Title,CompanyName,SalesPerson,Phone,Suffix,ModifiedDate,Rowguid)" +
-                "VALUES (@FirstName,@LastName,@MiddleName,@Title,@CompanyName,@SalesPerson,@Phone,@Suffix,@ModifiedDate,@RowGuid)";
-
-            var registerProdCommand = new SqlCommand(insertQueryProd, connectionProd);
-
-            foreach (var param in parameters)
-            {
-                registerProdCommand.Parameters.Add(param);
-            }
-
-            var resultProd = await registerProdCommand.ExecuteNonQueryAsync();
-            connectionProd.Close();
-
-
-            if (resultProd == resultSec && resultProd == 1 && resultSec == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
+            scope.Complete();
+            return true;
         }
 
         public async Task<bool> RefreshPassword(string emailAddress, string newPassword)
         {
-            using var connectionSecurity = new SqlConnection(connectionStringSec);
-            await connectionSecurity.OpenAsync();
+            var customer = await _customerSecurity.GetCustomerSecurityByEmailAsync(emailAddress)
+                ?? throw new Exception("Customer not found");
 
-            string query = "SELECT CustomerId,PasswordHash, PasswordSalt, ModifiedDate FROM Customer WHERE LOWER(TRIM(EmailAddress)) = @EmailAddress";
-            var verifyEmail = new SqlCommand(query, connectionSecurity);
-
-            var emailParam = CreateParam("@EmailAddress", SqlDbType.VarChar, emailAddress);
-            verifyEmail.Parameters.Add(emailParam);
-
-            using var reader = await verifyEmail.ExecuteReaderAsync();
-            if (!reader.Read())
-            {
-                throw new UnauthorizedAccessException("Wrong Credentials");
-            }
-
-            int customerId = reader.GetInt32(reader.GetOrdinal("CustomerId"));
-            await reader.CloseAsync();
-
-            var (Hash, Salt) = PasswordService.HashPassword(newPassword);
-            var hashParam = CreateParam("@PasswordHash", SqlDbType.VarChar, Hash, 256);
-            var saltParam = CreateParam("@PasswordSalt", SqlDbType.VarChar, Salt, 64);
-            var modifiedDateParam = CreateParam("@ModifiedDate", SqlDbType.DateTime, DateTime.UtcNow);
-            var rowGuidParam = CreateParam("@RowGuid", SqlDbType.UniqueIdentifier, Guid.NewGuid());
-            var customerIdParam = CreateParam("@CustomerId", SqlDbType.Int, customerId);
-
-
-            var insertQuery = "UPDATE Customer SET " +
-                "PasswordHash = @PasswordHash," +
-                "PasswordSalt = @PasswordSalt," +
-                "Rowguid = @RowGuid," +
-                "ModifiedDate = @ModifiedDate " +
-                "WHERE CustomerId = @CustomerId";
-
-            var registerSecurity = new SqlCommand(insertQuery, connectionSecurity);
-
-            registerSecurity.Parameters.Add(hashParam);
-            registerSecurity.Parameters.Add(saltParam);
-            registerSecurity.Parameters.Add(rowGuidParam);
-            registerSecurity.Parameters.Add(customerIdParam);
-            registerSecurity.Parameters.Add(modifiedDateParam);
-
-            var result = await registerSecurity.ExecuteNonQueryAsync();
-
-            if (result == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return await _customerSecurity.UpdatePasswordAsync(customer.CustomerID, newPassword);
         }
 
-        private async static Task<int> RegisterSecurity(SqlConnection connectionSecurity, string password, string email)
+        public async Task<bool> DeleteCustomer(string emailAddress)
         {
-            var (Hash, Salt) = PasswordService.HashPassword(password);
+            using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
 
-            var hashParam = CreateParam("@PasswordHash", SqlDbType.VarChar, Hash, 256);
-            var saltParam = CreateParam("@PasswordSalt", SqlDbType.VarChar, Salt, 64);
-            var emailAddressParam = CreateParam("@EmailAddress", SqlDbType.VarChar, email, 50);
-            var modifiedDateParam = CreateParam("@ModifiedDate", SqlDbType.DateTime, DateTime.UtcNow);
-            var rowGuidParam = CreateParam("@RowGuid", SqlDbType.UniqueIdentifier, Guid.NewGuid());
+            var customer = await _customerSecurity.GetCustomerSecurityByEmailAsync(emailAddress)
+                ?? throw new Exception("Customer not found");
 
-            var insertQuery = "INSERT INTO Customer (EmailAddress,PasswordHash,PasswordSalt,ModifiedDate,Rowguid) " +
-                "VALUES (@EmailAddress,@PasswordHash,@PasswordSalt,@ModifiedDate,@RowGuid)";
+            bool deletedSec = await _customerSecurity.DeleteCustomerSecurityAsync(customer.CustomerID);
 
-            var registerSecurity = new SqlCommand(insertQuery, connectionSecurity);
+            bool deletedProd = await _customerProduction.DeleteCustomerProductionAsync(customer.CustomerID);
 
-            registerSecurity.Parameters.Add(hashParam);
-            registerSecurity.Parameters.Add(saltParam);
-            registerSecurity.Parameters.Add(emailAddressParam);
-            registerSecurity.Parameters.Add(modifiedDateParam);
-            registerSecurity.Parameters.Add(rowGuidParam);
+            scope.Complete();
 
-            var result = await registerSecurity.ExecuteNonQueryAsync();
-            return result;
+            return deletedSec && deletedProd;
         }
-
-        private static SqlParameter CreateParam(string name, SqlDbType type, object? value, int size = 50)
-        {
-            object sqlValue = DBNull.Value;
-
-            if (value != null)
-            {
-                if (value is string strValue)
-                {
-                    if (!string.IsNullOrWhiteSpace(strValue))
-                    {
-                        sqlValue = strValue.TrimStart().TrimEnd();
-                    }
-                }
-                else
-                {
-                    sqlValue = value;
-                }
-            }
-
-            return new SqlParameter(name, type, size)
-            {
-                Value = sqlValue
-            };
-        }
-
     }
 }

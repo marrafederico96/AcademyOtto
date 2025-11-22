@@ -1,9 +1,9 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace AuthLibrary
+namespace AuthLibrary.Security
 {
-    internal class PasswordService
+    internal class PasswordService : IPasswordService
     {
         internal static bool CheckPassword(string password, string storedHashBase64, string storedSaltBase64)
         {

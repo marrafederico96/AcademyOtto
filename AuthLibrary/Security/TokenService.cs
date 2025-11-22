@@ -4,9 +4,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace AuthLibrary
+namespace AuthLibrary.Security
 {
-    internal class TokenService
+    internal class TokenService : ITokenService
     {
         internal static string GenerateJwtToken(string email, string role, TokenSettings tokenSettings)
         {

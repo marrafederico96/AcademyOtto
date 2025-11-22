@@ -23,10 +23,17 @@ namespace Ciclilavarizia.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> RefreshPassword([FromBody] UserLoginRequest userData)
+        public async Task<ActionResult<bool>> RefreshPassword([FromBody] UserLoginRequest userData)
         {
-            await sqlService.RefreshPassword(userData.EmailAddress, userData.Password);
-            return Ok();
+            var result = await sqlService.RefreshPassword(userData.EmailAddress, userData.Password);
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult<bool>> Delete([FromBody] UserDeleteRequest userData)
+        {
+            var result = await sqlService.DeleteCustomer(userData.EmailAddress);
+            return Ok(result);
         }
     }
 }
