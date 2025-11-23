@@ -8,6 +8,16 @@ namespace AuthLibrary.Security
 {
     internal class TokenService
     {
+        /// <summary>
+        /// Generates a JSON Web Token (JWT) for the specified user email and role using the provided token settings.
+        /// </summary>
+        /// <param name="email">The email address to include in the JWT claims. Cannot be null.</param>
+        /// <param name="role">The user role to include in the JWT claims. Cannot be null.</param>
+        /// <param name="tokenSettings">The settings used to configure the JWT, including secret key, issuer, audience, and expiration. Cannot be
+        /// null, and must contain a valid secret key.</param>
+        /// <returns>A string containing the generated JWT. The token includes the specified email and role claims, and is signed
+        /// using the provided secret key.</returns>
+        /// <exception cref="ArgumentException">Thrown if the secret key in <paramref name="tokenSettings"/> is null.</exception>
         internal static string GenerateJwtToken(string email, string role, TokenSettings tokenSettings)
         {
             var secretKey = tokenSettings.SecretKey ?? throw new ArgumentException("Secret key not found");
