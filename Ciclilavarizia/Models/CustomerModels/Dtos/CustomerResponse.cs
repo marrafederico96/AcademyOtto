@@ -10,7 +10,6 @@
         public string? Suffix { get; set; }
         public string? CompanyName { get; set; }
         public string? SalesPerson { get; set; }
-        public string? EmailAddress { get; set; }
         public string? Phone { get; set; }
 
     }

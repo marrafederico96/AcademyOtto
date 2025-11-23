@@ -106,17 +106,12 @@ public partial class CiclilavariziaContext : DbContext
 
             entity.HasIndex(e => e.Rowguid, "AK_Customer_rowguid").IsUnique();
 
-            entity.HasIndex(e => e.EmailAddress, "IX_Customer_EmailAddress");
-
             entity.Property(e => e.CustomerId)
                 .HasComment("Primary key for Customer records.")
                 .HasColumnName("CustomerID");
             entity.Property(e => e.CompanyName)
                 .HasMaxLength(128)
                 .HasComment("The customer's organization.");
-            entity.Property(e => e.EmailAddress)
-                .HasMaxLength(50)
-                .HasComment("E-mail address for the person.");
             entity.Property(e => e.FirstName)
                 .HasMaxLength(50)
                 .HasComment("First name of the person.");
@@ -131,14 +126,6 @@ public partial class CiclilavariziaContext : DbContext
                 .HasComment("Date and time the record was last updated.")
                 .HasColumnType("datetime");
             entity.Property(e => e.NameStyle).HasComment("0 = The data in FirstName and LastName are stored in western style (first name, last name) order.  1 = Eastern style (last name, first name) order.");
-            entity.Property(e => e.PasswordHash)
-                .HasMaxLength(128)
-                .IsUnicode(false)
-                .HasComment("Password for the e-mail account.");
-            entity.Property(e => e.PasswordSalt)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasComment("Random value concatenated with the password string before the password is hashed.");
             entity.Property(e => e.Phone)
                 .HasMaxLength(25)
                 .HasComment("Phone number associated with the person.");

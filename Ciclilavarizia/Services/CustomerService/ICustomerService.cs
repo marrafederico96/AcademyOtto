@@ -6,5 +6,6 @@ namespace Ciclilavarizia.Services.CustomerService
     {
         public Task<List<CustomerResponse>> GetCustomersAsync(int page, int pageSize);
         public Task<CustomerResponse> GetCustomerByIdAsync(int customerId);
+
     }
 }

@@ -53,24 +53,9 @@ public partial class Customer
     public string? SalesPerson { get; set; }
 
     /// <summary>
-    /// E-mail address for the person.
-    /// </summary>
-    public string? EmailAddress { get; set; }
-
-    /// <summary>
     /// Phone number associated with the person.
     /// </summary>
     public string? Phone { get; set; }
-
-    /// <summary>
-    /// Password for the e-mail account.
-    /// </summary>
-    public string PasswordHash { get; set; } = null!;
-
-    /// <summary>
-    /// Random value concatenated with the password string before the password is hashed.
-    /// </summary>
-    public string PasswordSalt { get; set; } = null!;
 
     /// <summary>
     /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.

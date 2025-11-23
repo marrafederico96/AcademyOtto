@@ -34,7 +34,7 @@ namespace Ciclilavarizia.Controllers
 
         [Authorize]
         [HttpDelete]
-        public async Task<ActionResult<bool>> Delete([FromBody] UserDeleteRequest userData)
+        public async Task<ActionResult<bool>> Delete([FromBody] UserEmailRequest userData)
         {
             var result = await sqlService.DeleteCustomer(userData.EmailAddress);
             return Ok(result);
@@ -42,7 +42,7 @@ namespace Ciclilavarizia.Controllers
 
         [Authorize]
         [HttpPut]
-        public async Task<ActionResult<bool>> UpdateEmailAddress([FromBody] UserDeleteRequest userData)
+        public async Task<ActionResult<bool>> UpdateEmailAddress([FromBody] UserEmailRequest userData)
         {
             var oldEmailAddress = User.Claims
                 .FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value

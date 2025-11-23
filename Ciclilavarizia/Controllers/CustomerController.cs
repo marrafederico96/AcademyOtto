@@ -21,5 +21,6 @@ namespace Ciclilavarizia.Controllers
             var result = await customerService.GetCustomerByIdAsync(customerId);
             return Ok(new { customer = result });
         }
+
     }
 }
