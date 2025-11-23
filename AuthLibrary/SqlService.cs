@@ -48,7 +48,7 @@ namespace AuthLibrary
             catch (Exception)
             {
                 await _customerProduction.DeleteCustomerProductionAsync(customerID);
-                throw new Exception("Registration failed");
+                throw new Exception();
             }
 
             return true;
@@ -71,7 +71,7 @@ namespace AuthLibrary
 
             if (!deletedSec)
             {
-                throw new Exception("Failes to delete customer in security");
+                throw new Exception();
             }
 
             try
@@ -82,7 +82,7 @@ namespace AuthLibrary
             catch (Exception)
             {
                 await _customerSecurity.RollbackCustomerSecurity(customerSecurity);
-                throw new Exception("DeleteCustomer failed, rollback applied to Security DB");
+                throw new Exception();
             }
 
         }

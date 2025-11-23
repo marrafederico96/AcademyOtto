@@ -36,22 +36,5 @@ namespace AuthLibrary.Repository
         /// </returns>
         Task<UserProductionData?> GetCustomerProductionByIdAsync(int customerID);
 
-        /// <summary>
-        /// Asynchronously updates an existing customer production record.
-        /// </summary>
-        /// <param name="customerID">The unique identifier of the customer production record to update.</param>
-        /// <param name="userData">The updated production data for the customer.</param>
-        /// <returns>
-        /// A task representing the asynchronous operation. The result is <c>true</c> if the update was successful; otherwise, <c>false</c>.
-        /// </returns>
-        Task<bool> UpdateCustomerProductionAsync(int customerID, UserProductionData userData);
-
-        /// <summary>
-        /// Asynchronously retrieves all customer production records.
-        /// </summary>
-        /// <returns>
-        /// A task representing the asynchronous operation. The result contains a list of all <see cref="UserProductionData"/> records.
-        /// </returns>
-        Task<List<UserProductionData>> GetAllCustomerProductionsAsync();
     }
 }
