@@ -25,6 +25,7 @@ namespace Ciclilavarizia.Controllers
             return Ok(new { registration = result });
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<ActionResult<bool>> RefreshPassword([FromBody] UserLoginRequest userData)
         {
@@ -34,9 +35,13 @@ namespace Ciclilavarizia.Controllers
 
         [Authorize]
         [HttpDelete]
-        public async Task<ActionResult<bool>> Delete([FromBody] UserEmailRequest userData)
+        public async Task<ActionResult<bool>> Delete()
         {
-            var result = await sqlService.DeleteCustomer(userData.EmailAddress);
+            var emailAddress = User.Claims
+                .FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value
+                 ?? throw new NotFoundException("Email not found");
+
+            var result = await sqlService.DeleteCustomer(emailAddress);
             return Ok(result);
         }
 
@@ -44,11 +49,11 @@ namespace Ciclilavarizia.Controllers
         [HttpPut]
         public async Task<ActionResult<bool>> UpdateEmailAddress([FromBody] UserEmailRequest userData)
         {
-            var oldEmailAddress = User.Claims
+            var emailAddress = User.Claims
                 .FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value
                 ?? throw new NotFoundException("Email not found");
 
-            var result = await sqlService.UpdateCustomerEmail(oldEmailAddress, userData.EmailAddress);
+            var result = await sqlService.UpdateCustomerEmail(emailAddress, userData.NewEmailAddress);
             return Ok(result);
         }
     }
