@@ -2,6 +2,9 @@
 
 namespace AuthLibrary.Repository
 {
+    /// <summary>
+    /// Interface defining operations for managing customer production records.
+    /// </summary>
     public interface ICustomerProductionRepository
     {
         /// <summary>
@@ -19,7 +22,7 @@ namespace AuthLibrary.Repository
         /// </summary>
         /// <param name="customerID">The unique identifier of the customer production record to delete.</param>
         /// <returns>
-        /// A task representing the asynchronous operation. The result is true if the deletion was successful; otherwise, false.
+        /// A task representing the asynchronous operation. The result is <c>true</c> if the deletion was successful; otherwise, <c>false</c>.
         /// </returns>
         Task<bool> DeleteCustomerProductionAsync(int customerID);
 
@@ -29,8 +32,26 @@ namespace AuthLibrary.Repository
         /// <param name="customerID">The unique identifier of the customer production record to retrieve.</param>
         /// <returns>
         /// A task representing the asynchronous operation. The result contains the <see cref="UserProductionData"/> 
-        /// if found; otherwise, null.
+        /// if the record is found; otherwise, <c>null</c>.
         /// </returns>
         Task<UserProductionData?> GetCustomerProductionByIdAsync(int customerID);
+
+        /// <summary>
+        /// Asynchronously updates an existing customer production record.
+        /// </summary>
+        /// <param name="customerID">The unique identifier of the customer production record to update.</param>
+        /// <param name="userData">The updated production data for the customer.</param>
+        /// <returns>
+        /// A task representing the asynchronous operation. The result is <c>true</c> if the update was successful; otherwise, <c>false</c>.
+        /// </returns>
+        Task<bool> UpdateCustomerProductionAsync(int customerID, UserProductionData userData);
+
+        /// <summary>
+        /// Asynchronously retrieves all customer production records.
+        /// </summary>
+        /// <returns>
+        /// A task representing the asynchronous operation. The result contains a list of all <see cref="UserProductionData"/> records.
+        /// </returns>
+        Task<List<UserProductionData>> GetAllCustomerProductionsAsync();
     }
 }
