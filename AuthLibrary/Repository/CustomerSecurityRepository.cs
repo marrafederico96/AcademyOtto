@@ -120,5 +120,20 @@ namespace AuthLibrary.Repository
 
             var result = await insertCmd.ExecuteNonQueryAsync();
         }
+
+        public async Task<bool> UpdateEmailSecurity(int customerID, string newEmail)
+        {
+            using var connectionSec = await factory.CreateAsync();
+            using var updateCmd = new SqlCommand(@"UPDATE Customer 
+                                                SET EmailAddress = @EmailAddress, ModifiedDate = @ModifiedDate 
+                                                WHERE CustomerID = @CustomerID", connectionSec);
+
+            updateCmd.Parameters.Add(UtilityService.CreateParam("@ModifiedDate", SqlDbType.DateTime, DateTime.UtcNow));
+            updateCmd.Parameters.Add(UtilityService.CreateParam("@EmailAddress", SqlDbType.VarChar, newEmail));
+            updateCmd.Parameters.Add(UtilityService.CreateParam("@CustomerID", SqlDbType.Int, customerID));
+
+            int result = await updateCmd.ExecuteNonQueryAsync();
+            return result == 1;
+        }
     }
 }

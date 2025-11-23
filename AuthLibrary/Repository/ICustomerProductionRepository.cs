@@ -15,7 +15,7 @@ namespace AuthLibrary.Repository
         /// A task representing the asynchronous operation. The result contains the unique identifier of the newly inserted
         /// customer production record.
         /// </returns>
-        Task<int> InsertCustomerProductionAsync(UserRegisterRequest userData);
+        public Task<int> InsertCustomerProductionAsync(UserRegisterRequest userData);
 
         /// <summary>
         /// Asynchronously deletes a customer production record by its unique identifier.
@@ -24,7 +24,7 @@ namespace AuthLibrary.Repository
         /// <returns>
         /// A task representing the asynchronous operation. The result is <c>true</c> if the deletion was successful; otherwise, <c>false</c>.
         /// </returns>
-        Task<bool> DeleteCustomerProductionAsync(int customerID);
+        public Task<bool> DeleteCustomerProductionAsync(int customerID);
 
         /// <summary>
         /// Asynchronously retrieves a customer production record by its unique identifier.
@@ -34,7 +34,7 @@ namespace AuthLibrary.Repository
         /// A task representing the asynchronous operation. The result contains the <see cref="UserProductionData"/> 
         /// if the record is found; otherwise, <c>null</c>.
         /// </returns>
-        Task<UserProductionData?> GetCustomerProductionByIdAsync(int customerID);
+        public Task<UserProductionData?> GetCustomerProductionByIdAsync(int customerID);
 
     }
 }

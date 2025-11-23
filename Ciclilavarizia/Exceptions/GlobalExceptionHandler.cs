@@ -42,10 +42,10 @@ namespace Ciclilavarizia.Exceptions
                     problemDetails.Detail = exception.Message;
                     break;
                 default:
-                    problemDetails.Detail = env.IsDevelopment() ? exception.Message : "Errore interno. Riprovate";
+                    problemDetails.Detail = env.IsDevelopment() ? exception.Message : "Internal server error.";
                     problemDetails.Title = "Internal Server Error";
                     problemDetails.Status = StatusCodes.Status500InternalServerError;
-                    Log.Error(exception, "Unhandled server error");
+                    Log.Error(exception, "Server error");
                     break;
 
             }

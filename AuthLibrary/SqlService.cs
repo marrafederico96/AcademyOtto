@@ -86,5 +86,13 @@ namespace AuthLibrary
             }
 
         }
+
+        public async Task<bool> UpdateCustomerEmail(string oldEmailAddress, string newEmailAddress)
+        {
+            var customer = await _customerSecurity.GetCustomerSecurityByEmailAsync(oldEmailAddress) ??
+                throw new Exception("Customer not found");
+
+            return await _customerSecurity.UpdateEmailSecurity(customer.CustomerID, newEmailAddress);
+        }
     }
 }

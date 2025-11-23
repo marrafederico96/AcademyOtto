@@ -1,6 +1,9 @@
 ﻿using AuthLibrary;
 using AuthLibrary.Models;
+using Ciclilavarizia.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Ciclilavarizia.Controllers
 {
@@ -29,10 +32,23 @@ namespace Ciclilavarizia.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpDelete]
         public async Task<ActionResult<bool>> Delete([FromBody] UserDeleteRequest userData)
         {
             var result = await sqlService.DeleteCustomer(userData.EmailAddress);
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpPut]
+        public async Task<ActionResult<bool>> UpdateEmailAddress([FromBody] UserDeleteRequest userData)
+        {
+            var oldEmailAddress = User.Claims
+                .FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value
+                ?? throw new NotFoundException("Email not found");
+
+            var result = await sqlService.UpdateCustomerEmail(oldEmailAddress, userData.EmailAddress);
             return Ok(result);
         }
     }

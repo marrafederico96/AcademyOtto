@@ -5,7 +5,9 @@ using Ciclilavarizia.Exceptions;
 using Ciclilavarizia.Models;
 using Ciclilavarizia.Services.CustomerService;
 using Ciclilavarizia.Services.ProductService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -52,11 +54,30 @@ namespace Ciclilavarizia
             SqlService sqlService = new(connectionStringProd, connectionStringSecurity, tokenSettings);
             builder.Services.AddSingleton(sqlService);
 
+            //Authroization
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+               .AddJwtBearer(options =>
+               {
+                   var key = System.Text.Encoding.ASCII.GetBytes(tokenSettings.SecretKey!);
+                   options.TokenValidationParameters = new TokenValidationParameters
+                   {
+                       ValidateIssuer = true,
+                       ValidateAudience = true,
+                       ValidateIssuerSigningKey = true,
+                       ValidIssuer = tokenSettings.Issuer,
+                       ValidAudience = tokenSettings.Audience,
+                       ClockSkew = TimeSpan.FromSeconds(3),
+                       IssuerSigningKey = new SymmetricSecurityKey(key)
+                   };
+               });
+
+
             // My services
             builder.Services.AddScoped<ICustomerService, CustomerService>();
             builder.Services.AddScoped<IProductService, ProductService>();
 
             builder.Services.AddControllers();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -74,6 +95,7 @@ namespace Ciclilavarizia
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
