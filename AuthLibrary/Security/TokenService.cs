@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AuthLibrary.Security
 {
-    internal class TokenService : ITokenService
+    internal class TokenService
     {
         internal static string GenerateJwtToken(string email, string role, TokenSettings tokenSettings)
         {

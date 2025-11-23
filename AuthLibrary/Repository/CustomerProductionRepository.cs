@@ -52,5 +52,35 @@ namespace AuthLibrary.Repository
             return result == 1;
         }
 
+        public async Task<UserProductionData?> GetCustomerProductionByIdAsync(int customerID)
+        {
+            using var connection = await factory.CreateAsync();
+
+            var cmd = new SqlCommand(
+                "SELECT CustomerID, EmailAddress, Title, FirstName, MiddleName, LastName, ModifiedDate, Suffix, CompanyName, SalesPerson, Phone " +
+                "FROM Customer WHERE customerID = @CustomerID",
+                connection);
+
+            cmd.Parameters.Add(UtilityService.CreateParam("@CustomerID", SqlDbType.Int, customerID));
+
+            using var reader = await cmd.ExecuteReaderAsync();
+            if (!await reader.ReadAsync())
+                return null;
+
+            return new UserProductionData
+            {
+                CustomerID = reader.GetInt32(reader.GetOrdinal("CustomerID")),
+                EmailAddress = reader.GetString(reader.GetOrdinal("EmailAddress")),
+                CompanyName = reader.GetString(reader.GetOrdinal("ComapnyName")),
+                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                MiddleName = reader.GetString(reader.GetOrdinal("MiddleName")),
+                Phone = reader.GetString(reader.GetOrdinal("Phone")),
+                SalesPerson = reader.GetString(reader.GetOrdinal("SalesPerson")),
+                Suffix = reader.GetString(reader.GetOrdinal("Suffix")),
+                Title = reader.GetString(reader.GetOrdinal("Title"))
+            };
+        }
+
     }
 }

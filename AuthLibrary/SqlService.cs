@@ -3,7 +3,6 @@ using AuthLibrary.Exceptions;
 using AuthLibrary.Models;
 using AuthLibrary.Repository;
 using AuthLibrary.Security;
-using System.Transactions;
 
 namespace AuthLibrary
 {
@@ -40,13 +39,18 @@ namespace AuthLibrary
 
         public async Task<bool> RegisterUser(UserRegisterRequest userData)
         {
-            using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+            var customerID = await _customerProduction.InsertCustomerProductionAsync(userData);
 
-            var customerId = await _customerProduction.InsertCustomerProductionAsync(userData);
+            try
+            {
+                await _customerSecurity.InsertCustomerSecurityAsync(userData, customerID);
+            }
+            catch (Exception)
+            {
+                await _customerProduction.DeleteCustomerProductionAsync(customerID);
+                throw new Exception("Registration failed");
+            }
 
-            await _customerSecurity.InsertCustomerSecurityAsync(userData, customerId);
-
-            scope.Complete();
             return true;
         }
 
@@ -60,18 +64,27 @@ namespace AuthLibrary
 
         public async Task<bool> DeleteCustomer(string emailAddress)
         {
-            using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-
-            var customer = await _customerSecurity.GetCustomerSecurityByEmailAsync(emailAddress)
+            var customerSecurity = await _customerSecurity.GetCustomerSecurityByEmailAsync(emailAddress)
                 ?? throw new Exception("Customer not found");
 
-            bool deletedSec = await _customerSecurity.DeleteCustomerSecurityAsync(customer.CustomerID);
+            bool deletedSec = await _customerSecurity.DeleteCustomerSecurityAsync(customerSecurity.CustomerID);
 
-            bool deletedProd = await _customerProduction.DeleteCustomerProductionAsync(customer.CustomerID);
+            if (!deletedSec)
+            {
+                throw new Exception("Failes to delete customer in security");
+            }
 
-            scope.Complete();
+            try
+            {
+                bool deletedProd = await _customerProduction.DeleteCustomerProductionAsync(customerSecurity.CustomerID);
+                return deletedSec && deletedProd;
+            }
+            catch (Exception)
+            {
+                await _customerSecurity.RollbackCustomerSecurity(customerSecurity);
+                throw new Exception("DeleteCustomer failed, rollback applied to Security DB");
+            }
 
-            return deletedSec && deletedProd;
         }
     }
 }

@@ -8,7 +8,6 @@ using Ciclilavarizia.Services.ProductService;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using Serilog;
-using System.Transactions;
 
 namespace Ciclilavarizia
 {
@@ -61,8 +60,6 @@ namespace Ciclilavarizia
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
-            TransactionManager.ImplicitDistributedTransactions = true;
 
             var app = builder.Build();
 

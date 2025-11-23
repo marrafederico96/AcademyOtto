@@ -6,6 +6,7 @@ namespace AuthLibrary.Repository
     {
         public Task<int> InsertCustomerProductionAsync(UserRegisterRequest userData);
         public Task<bool> DeleteCustomerProductionAsync(int customerID);
+        public Task<UserProductionData?> GetCustomerProductionByIdAsync(int customerID);
 
     }
 }

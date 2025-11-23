@@ -8,6 +8,9 @@ namespace AuthLibrary.Repository
         public Task<bool> UpdatePasswordAsync(int customerId, string newPassword);
         public Task<UserSecurityData?> GetCustomerSecurityByEmailAsync(string email);
         public Task<bool> DeleteCustomerSecurityAsync(int customerID);
+        public Task RollbackCustomerSecurity(UserSecurityData userData);
+
+
 
     }
 }

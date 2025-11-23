@@ -82,7 +82,7 @@ namespace AuthLibrary.Repository
             using var connection = await factory.CreateAsync();
 
             var cmd = new SqlCommand(
-                "SELECT CustomerID, PasswordHash, PasswordSalt, ModifiedDate FROM Customer WHERE LOWER(TRIM(EmailAddress)) = @Email",
+                "SELECT CustomerID,EmailAddress, PasswordHash, PasswordSalt, ModifiedDate,Rowguid FROM Customer WHERE LOWER(TRIM(EmailAddress)) = @Email",
                 connection);
 
             cmd.Parameters.Add(UtilityService.CreateParam("@Email", SqlDbType.VarChar, email));
@@ -94,10 +94,31 @@ namespace AuthLibrary.Repository
             return new UserSecurityData
             {
                 CustomerID = reader.GetInt32(reader.GetOrdinal("CustomerID")),
+                Rowguid = reader.GetGuid(reader.GetOrdinal("Rowguid")),
+                EmailAddress = reader.GetString(reader.GetOrdinal("EmailAddress")),
                 PasswordHash = reader.GetString(reader.GetOrdinal("PasswordHash")),
                 PasswordSalt = reader.GetString(reader.GetOrdinal("PasswordSalt")),
                 ModifiedDate = reader.GetDateTime(reader.GetOrdinal("ModifiedDate"))
             };
+        }
+
+        public async Task RollbackCustomerSecurity(UserSecurityData userData)
+        {
+            using var connectionSec = await factory.CreateAsync();
+            using var insertCmd = new SqlCommand(
+                  @"INSERT INTO Customer 
+                   (CustomerID, EmailAddress, PasswordHash, PasswordSalt, ModifiedDate, RowGuid)
+                   VALUES (@CustomerID, @EmailAddress, @Hash, @Salt, @ModifiedDate, @RowGuid)",
+                  connectionSec);
+
+            insertCmd.Parameters.Add(UtilityService.CreateParam("@CustomerID", SqlDbType.Int, userData.CustomerID));
+            insertCmd.Parameters.Add(UtilityService.CreateParam("@EmailAddress", SqlDbType.VarChar, userData.EmailAddress));
+            insertCmd.Parameters.Add(UtilityService.CreateParam("@Hash", SqlDbType.VarChar, userData.PasswordHash, 256));
+            insertCmd.Parameters.Add(UtilityService.CreateParam("@Salt", SqlDbType.VarChar, userData.PasswordSalt, 64));
+            insertCmd.Parameters.Add(UtilityService.CreateParam("@ModifiedDate", SqlDbType.DateTime, userData.ModifiedDate));
+            insertCmd.Parameters.Add(UtilityService.CreateParam("@RowGuid", SqlDbType.UniqueIdentifier, userData.Rowguid));
+
+            var result = await insertCmd.ExecuteNonQueryAsync();
         }
     }
 }

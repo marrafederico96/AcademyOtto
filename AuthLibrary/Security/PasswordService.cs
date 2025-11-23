@@ -3,7 +3,7 @@ using System.Text;
 
 namespace AuthLibrary.Security
 {
-    internal class PasswordService : IPasswordService
+    internal class PasswordService
     {
         internal static bool CheckPassword(string password, string storedHashBase64, string storedSaltBase64)
         {
