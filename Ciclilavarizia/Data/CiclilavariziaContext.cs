@@ -1,9 +1,9 @@
-﻿using Ciclilavarizia.Models;
-using Ciclilavarizia.Models.CustomerModels;
-using Ciclilavarizia.Models.SalesOrderModels;
+﻿using AdventureWorks.Models;
+using AdventureWorks.Models.CustomerModels;
+using AdventureWorks.Models.SalesOrderModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ciclilavarizia.Data;
+namespace AdventureWorks.Data;
 
 public partial class CiclilavariziaContext : DbContext
 {

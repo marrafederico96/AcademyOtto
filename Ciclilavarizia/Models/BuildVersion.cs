@@ -1,4 +1,4 @@
-﻿namespace Ciclilavarizia.Models;
+﻿namespace AdventureWorks.Models;
 
 /// <summary>
 /// Current version number of the AdventureWorksLT 2012 sample database. 

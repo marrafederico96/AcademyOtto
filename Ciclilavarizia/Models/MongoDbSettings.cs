@@ -1,4 +1,4 @@
-﻿namespace Ciclilavarizia.Models
+﻿namespace AdventureWorks.Models
 {
     public class MongoDbSettings
     {

@@ -1,4 +1,4 @@
-﻿namespace Ciclilavarizia.Models.CustomerModels;
+﻿namespace AdventureWorks.Models.CustomerModels;
 
 /// <summary>
 /// Cross-reference table mapping customers to their address(es).

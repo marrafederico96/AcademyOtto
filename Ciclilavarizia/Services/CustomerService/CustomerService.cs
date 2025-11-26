@@ -1,9 +1,9 @@
-﻿using Ciclilavarizia.Data;
-using Ciclilavarizia.Exceptions;
-using Ciclilavarizia.Models.CustomerModel.Dtos;
+﻿using AdventureWorks.Data;
+using AdventureWorks.Exceptions;
+using AdventureWorks.Models.CustomerModel.Dtos;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ciclilavarizia.Services.CustomerService
+namespace AdventureWorks.Services.CustomerService
 {
     public class CustomerService(CiclilavariziaContext context) : ICustomerService
     {

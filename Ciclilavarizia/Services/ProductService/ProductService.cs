@@ -1,9 +1,9 @@
-﻿using Ciclilavarizia.Data;
-using Ciclilavarizia.Models.ProductModels.Dtos;
+﻿using AdventureWorks.Data;
+using AdventureWorks.Models.ProductModels.Dtos;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace Ciclilavarizia.Services.ProductService
+namespace AdventureWorks.Services.ProductService
 {
     public class ProductService(MongoDbService mongoDbService) : IProductService
     {

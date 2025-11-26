@@ -1,9 +1,9 @@
-﻿using Ciclilavarizia.Models;
-using Ciclilavarizia.Models.ProductModels;
+﻿using AdventureWorks.Models;
+using AdventureWorks.Models.ProductModels;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace Ciclilavarizia.Data
+namespace AdventureWorks.Data
 {
     public class MongoDbService
     {

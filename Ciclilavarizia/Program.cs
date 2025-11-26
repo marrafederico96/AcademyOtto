@@ -1,17 +1,18 @@
+using AdventureWorks.Data;
+using AdventureWorks.Exceptions;
+using AdventureWorks.Hubs.Chats;
+using AdventureWorks.Models;
+using AdventureWorks.Services.CustomerService;
+using AdventureWorks.Services.ProductService;
 using AuthLibrary;
 using AuthLibrary.Models;
-using Ciclilavarizia.Data;
-using Ciclilavarizia.Exceptions;
-using Ciclilavarizia.Models;
-using Ciclilavarizia.Services.CustomerService;
-using Ciclilavarizia.Services.ProductService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using Serilog;
 
-namespace Ciclilavarizia
+namespace AdventureWorks
 {
     public class Program
     {
@@ -71,6 +72,20 @@ namespace Ciclilavarizia
                    };
                });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy
+                        .WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
+
+            // Add SignalR
+            builder.Services.AddSignalR();
 
             // My services
             builder.Services.AddScoped<ICustomerService, CustomerService>();
@@ -90,6 +105,9 @@ namespace Ciclilavarizia
                 app.MapSwagger("/openapi/{documentName}.json");
                 app.MapScalarApiReference();
             }
+
+            app.UseCors("CorsPolicy");
+            app.MapHub<ChatHub>("/Chat");
 
             app.UseExceptionHandler();
 

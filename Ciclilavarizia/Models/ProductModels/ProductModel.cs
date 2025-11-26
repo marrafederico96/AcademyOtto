@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Ciclilavarizia.Models.ProductModels;
+namespace AdventureWorks.Models.ProductModels;
 
 public partial class ProductModel
 {

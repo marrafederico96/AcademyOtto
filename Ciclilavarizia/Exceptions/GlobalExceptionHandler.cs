@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
-namespace Ciclilavarizia.Exceptions
+namespace AdventureWorks.Exceptions
 {
     public class GlobalExceptionHandler(IHostEnvironment env) : IExceptionHandler
     {

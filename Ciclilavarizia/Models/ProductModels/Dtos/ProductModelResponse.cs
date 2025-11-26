@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace Ciclilavarizia.Models.ProductModels.Dtos
+namespace AdventureWorks.Models.ProductModels.Dtos
 {
     public class ProductModelResponse
     {

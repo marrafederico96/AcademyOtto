@@ -1,6 +1,6 @@
-﻿using Ciclilavarizia.Models.SalesOrderModels;
+﻿using AdventureWorks.Models.SalesOrderModels;
 
-namespace Ciclilavarizia.Models.CustomerModels;
+namespace AdventureWorks.Models.CustomerModels;
 
 /// <summary>
 /// Customer information.

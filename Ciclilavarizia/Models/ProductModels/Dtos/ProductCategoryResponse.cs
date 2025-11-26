@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Ciclilavarizia.Models.ProductModels.Dtos
+namespace AdventureWorks.Models.ProductModels.Dtos
 {
     [BsonIgnoreExtraElements]
     public class ProductCategoryResponse

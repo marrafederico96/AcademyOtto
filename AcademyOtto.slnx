@@ -1,4 +1,4 @@
 <Solution>
-  <Project Path="Ciclilavarizia/Ciclilavarizia.csproj" />
   <Project Path="AuthLibrary/AuthLibrary.csproj" />
+  <Project Path="Ciclilavarizia/AdventureWorks.csproj" />
 </Solution>

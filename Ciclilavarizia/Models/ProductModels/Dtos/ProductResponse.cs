@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Ciclilavarizia.Models.ProductModels.Dtos
+namespace AdventureWorks.Models.ProductModels.Dtos
 {
     [BsonIgnoreExtraElements]
     public class ProductResponse
@@ -36,6 +36,12 @@ namespace Ciclilavarizia.Models.ProductModels.Dtos
 
         [BsonElement("ProductModelID")]
         public int? ProductModelId { get; set; }
+
+        [BsonElement("ThumbNailPhoto")]
+        public string? ThumbNailPhoto { get; set; }
+
+        [BsonElement("ThumbnailPhotoFileName")]
+        public string? ThumbnailPhotoFileName { get; set; }
 
         public ProductCategoryResponse? ProductCategory { get; set; }
 

@@ -1,11 +1,11 @@
-﻿using AuthLibrary;
+﻿using AdventureWorks.Exceptions;
+using AuthLibrary;
 using AuthLibrary.Models;
-using Ciclilavarizia.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace Ciclilavarizia.Controllers
+namespace AdventureWorks.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]

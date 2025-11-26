@@ -1,8 +1,8 @@
-﻿using Ciclilavarizia.Models.ProductModels.Dtos;
-using Ciclilavarizia.Services.ProductService;
+﻿using AdventureWorks.Models.ProductModels.Dtos;
+using AdventureWorks.Services.ProductService;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ciclilavarizia.Controllers
+namespace AdventureWorks.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
@@ -10,9 +10,9 @@ namespace Ciclilavarizia.Controllers
     {
         [HttpGet]
         public async Task<ActionResult<List<ProductResponse>>> GetProducts(
-            [FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string categoryName = "All")
+            [FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string category = "All")
         {
-            var result = await productService.GetProductsAsync(page, pageSize, categoryName);
+            var result = await productService.GetProductsAsync(page, pageSize, category);
             return Ok(result);
         }
     }

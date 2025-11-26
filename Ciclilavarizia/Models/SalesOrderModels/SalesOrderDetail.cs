@@ -1,6 +1,6 @@
-﻿using Ciclilavarizia.Models.ProductModels;
+﻿using AdventureWorks.Models.ProductModels;
 
-namespace Ciclilavarizia.Models.SalesOrderModels;
+namespace AdventureWorks.Models.SalesOrderModels;
 
 /// <summary>
 /// Individual products associated with a specific sales order. See SalesOrderHeader.

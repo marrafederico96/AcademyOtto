@@ -1,6 +1,6 @@
-﻿using Ciclilavarizia.Models.ProductModels.Dtos;
+﻿using AdventureWorks.Models.ProductModels.Dtos;
 
-namespace Ciclilavarizia.Services.ProductService
+namespace AdventureWorks.Services.ProductService
 {
     public interface IProductService
     {
