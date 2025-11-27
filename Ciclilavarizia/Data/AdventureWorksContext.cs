@@ -1,17 +1,18 @@
 ﻿using AdventureWorks.Models;
 using AdventureWorks.Models.CustomerModels;
+using AdventureWorks.Models.ProductModels;
 using AdventureWorks.Models.SalesOrderModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdventureWorks.Data;
 
-public partial class CiclilavariziaContext : DbContext
+public partial class AdventureWorksContext : DbContext
 {
-    public CiclilavariziaContext()
+    public AdventureWorksContext()
     {
     }
 
-    public CiclilavariziaContext(DbContextOptions<CiclilavariziaContext> options)
+    public AdventureWorksContext(DbContextOptions<AdventureWorksContext> options)
         : base(options)
     {
     }
@@ -25,6 +26,8 @@ public partial class CiclilavariziaContext : DbContext
     public virtual DbSet<CustomerAddress> CustomerAddresses { get; set; }
 
     public virtual DbSet<ErrorLog> ErrorLogs { get; set; }
+
+    public virtual DbSet<Review> Reviews { get; set; }
 
     public virtual DbSet<SalesOrderDetail> SalesOrderDetails { get; set; }
 

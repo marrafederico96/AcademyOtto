@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="AuthLibrary/AuthLibrary.csproj" />
   <Project Path="Ciclilavarizia/AdventureWorks.csproj" />
+  <Project Path="MLModelTraining/MLModelTraining.csproj" Id="83cbdeff-1d6f-41f1-98fb-8c13460de8cb" />
 </Solution>

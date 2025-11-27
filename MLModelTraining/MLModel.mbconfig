@@ -1,0 +1,213 @@
+﻿{
+  "Scenario": "Classification",
+  "DataSource": {
+    "Type": "SQL",
+    "Version": 1,
+    "ColumnProperties": [
+      {
+        "ColumnName": "ReviewText",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Class",
+        "ColumnPurpose": "Label",
+        "ColumnDataFormat": "Boolean",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      }
+    ],
+    "ConnectionString": "Data Source=FEDERICO-PC\\SQLEXPRESS;Initial Catalog=AdventureWorksLT2019;Integrated Security=True;Trust Server Certificate=True",
+    "CommandString": "SELECT CAST([ReviewText] as NVARCHAR(MAX)), [Class] FROM [dbo].[Reviews]",
+    "DatabaseName": "AdventureWorksLT2019",
+    "SelectedTableDbo": "dbo",
+    "TableName": "Reviews"
+  },
+  "Environment": {
+    "Type": "LocalCPU",
+    "Version": 1
+  },
+  "RunHistory": {
+    "Version": 3,
+    "Type": "Result",
+    "Trials": [
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "LbfgsLogisticRegressionBinary",
+        "Score": 0.808927963065267,
+        "RuntimeInSeconds": 0.791,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e4",
+          "e0": {
+            "InputColumnName": "ReviewText",
+            "OutputColumnName": "ReviewText"
+          },
+          "e1": {
+            "InputColumnNames": [
+              "ReviewText"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e4": {
+            "L1Regularization": 0.03125,
+            "L2Regularization": 0.0417905,
+            "LabelColumnName": "Class",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "LbfgsLogisticRegressionBinary",
+        "Score": 0.80704966143310874,
+        "RuntimeInSeconds": 0.632,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e4",
+          "e0": {
+            "InputColumnName": "ReviewText",
+            "OutputColumnName": "ReviewText"
+          },
+          "e1": {
+            "InputColumnNames": [
+              "ReviewText"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e4": {
+            "L1Regularization": 0.03125,
+            "L2Regularization": 0.2767103,
+            "LabelColumnName": "Class",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "LbfgsLogisticRegressionBinary",
+        "Score": 0.79751396132893027,
+        "RuntimeInSeconds": 0.505,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e4",
+          "e0": {
+            "InputColumnName": "ReviewText",
+            "OutputColumnName": "ReviewText"
+          },
+          "e1": {
+            "InputColumnNames": [
+              "ReviewText"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e4": {
+            "L1Regularization": 0.03258585,
+            "L2Regularization": 0.6976784,
+            "LabelColumnName": "Class",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "LbfgsLogisticRegressionBinary",
+        "Score": 0.7832065541727804,
+        "RuntimeInSeconds": 0.542,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e4",
+          "e0": {
+            "InputColumnName": "ReviewText",
+            "OutputColumnName": "ReviewText"
+          },
+          "e1": {
+            "InputColumnNames": [
+              "ReviewText"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e4": {
+            "L1Regularization": 0.2606554,
+            "L2Regularization": 0.71347296,
+            "LabelColumnName": "Class",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "LightGbmBinary",
+        "Score": 0.75857447035085579,
+        "RuntimeInSeconds": 13.681,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e3",
+          "e0": {
+            "InputColumnName": "ReviewText",
+            "OutputColumnName": "ReviewText"
+          },
+          "e1": {
+            "InputColumnNames": [
+              "ReviewText"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e3": {
+            "NumberOfLeaves": 4,
+            "MinimumExampleCountPerLeaf": 20,
+            "LearningRate": 0.97059144647059115,
+            "NumberOfTrees": 1612,
+            "SubsampleFraction": 0.99999977667298645,
+            "MaximumBinCountPerFeature": 546,
+            "FeatureFraction": 0.88658990291283013,
+            "L1Regularization": 3.6875181962085059E-09,
+            "L2Regularization": 0.99999977667298645,
+            "LabelColumnName": "Class",
+            "FeatureColumnName": "Features"
+          }
+        }
+      }
+    ],
+    "Estimators": {
+      "e0": "FeaturizeText",
+      "e1": "Concatenate",
+      "e2": "FastTreeBinary",
+      "e3": "LightGbmBinary",
+      "e4": "LbfgsLogisticRegressionBinary",
+      "e5": "SdcaLogisticRegressionBinary",
+      "e6": "FastForestBinary",
+      "e7": "Naive"
+    },
+    "Schema": "e0 * e1 * (e2 + e3 + e4 + e5 + e6 * e7)",
+    "MetricName": "Accuracy",
+    "ModelFilePath": "C:\\Users\\marra\\Documents\\Betacom\\Academy\\Progetti\\Backend\\AcademyOtto\\MLModelTraining\\MLModel.mlnet"
+  },
+  "Type": "TrainingConfig",
+  "Version": 5,
+  "TrainingOption": {
+    "Version": 2,
+    "Subsampling": false,
+    "Tuner": "eci-cfo",
+    "Type": "ClassificationTrainingOption",
+    "TrainingTime": 60,
+    "OptimizeMetric": "MacroAccuracy",
+    "LabelColumn": "Class",
+    "AvailableTrainers": [
+      "SDCA",
+      "LBFGS",
+      "LGBM",
+      "FASTTREE",
+      "FASTFOREST"
+    ],
+    "ValidationOption": {
+      "Version": 0,
+      "Type": "CrossValidationValidationOption",
+      "NumberOfFolds": 5
+    }
+  }
+}

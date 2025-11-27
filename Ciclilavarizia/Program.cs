@@ -2,6 +2,7 @@ using AdventureWorks.Data;
 using AdventureWorks.Exceptions;
 using AdventureWorks.Hubs.Chats;
 using AdventureWorks.Models;
+using AdventureWorks.Services.AISentiment;
 using AdventureWorks.Services.CustomerService;
 using AdventureWorks.Services.ProductService;
 using AuthLibrary;
@@ -35,7 +36,7 @@ namespace AdventureWorks
             // Add services to the container.
 
             // Add SQL Server Context
-            builder.Services.AddDbContext<CiclilavariziaContext>(options =>
+            builder.Services.AddDbContext<AdventureWorksContext>(options =>
             {
                 options.UseSqlServer(connectionStringProd);
             });
@@ -47,6 +48,7 @@ namespace AdventureWorks
             // Add Middleware Exception
             builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
             builder.Services.AddProblemDetails();
+
 
             // Add Auth Library 
             var tokenSettings = builder.Configuration.GetSection("TokenSettings").Get<TokenSettings>()
@@ -90,6 +92,9 @@ namespace AdventureWorks
             // My services
             builder.Services.AddScoped<ICustomerService, CustomerService>();
             builder.Services.AddScoped<IProductService, ProductService>();
+
+            // Add ML
+            builder.Services.AddScoped<ISentimentService, SentimentService>();
 
             builder.Services.AddControllers();
 

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AdventureWorks.Services.CustomerService
 {
-    public class CustomerService(CiclilavariziaContext context) : ICustomerService
+    public class CustomerService(AdventureWorksContext context) : ICustomerService
     {
         public async Task<List<CustomerResponse>> GetCustomersAsync(int page, int pageSize)
         {
